@@ -1,0 +1,30 @@
+body {
+  /* background: url("./images/another bg.jpg") no-repeat; */
+background: url("./images/bg.jpg") no-repeat;
+background-size: cover;
+  }
+
+  h1{
+    text-align: center;
+    font-size: 70px;
+    margin: 2%
+  }
+h2{
+  text-align: center;
+
+}
+  section{
+    display: flex;
+    justify-content: space-around
+  }
+
+  section div{
+flex-wrap: wrap;
+  }
+  #botones{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  #botones button{
+margin: 20% 0  }
