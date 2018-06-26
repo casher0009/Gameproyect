@@ -70,7 +70,7 @@ class HERO extends Character{
       class Bullet{
         constructor(character){
           this.width = 35
-          this.height = 128
+          this.height = 96
             this.x = character.x + character.width /2 - this.width/2;
             this.y= character.y - this.height
             this.vY = -3
@@ -104,7 +104,7 @@ class HERO extends Character{
           draw(){
               ctx.fillStyle="#A01E8E";
               ctx.fillRect(this.x,this.y, this.width,this.height)
-              console.log(this.x, this.y)
+              // console.log(this.x, this.y) PRUEBA
           }
       }
       
@@ -149,7 +149,10 @@ function drawBullets(){
    if(!(frames%50===0) ) return;
 
    var basura = new Enemy();
-   enemies.push(basura);
+   if (enemies.length <= 76){
+   enemies.push(basura),
+  console.log(enemies.length)}
+   return;
  }
 
  function drawBasura(){
