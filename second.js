@@ -1,4 +1,4 @@
-//canvas height="512" width="512"
+//canvas height="576" width="512"
 var canvas2 = document.getElementById("second");
 var ctx2 = canvas2.getContext('2d');
 
