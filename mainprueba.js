@@ -12,10 +12,11 @@ var ctx = canvas.getContext('2d');
 //constants
 var interval;
 var frames = 0;
-var bullets = []
+var score = 0;
 var basuras = []
  var images = {
   hero: 'https://t1.rbxcdn.com/cbc4940cc40fc00da68ffaab0ed89ae1',
+  hero2: 'https://t1.rbxcdn.com/cbc4940cc40fc00da68ffaab0ed89ae1',
   bg:'./images/canvas bg.jpg',
   bullet: './images/bullet.png',
  }
@@ -25,7 +26,7 @@ var imgBasura = {
   botella: './images/botella.png',
   cigarro: './images/cigarro.png',
   duff: './images/duff.png',
-  popote: './images/duff.png'
+  popote: './images/popote.png'
 }
 
 
@@ -37,6 +38,7 @@ this.x = canvas.width/2
 this.y = canvas.height -64
 this.width = 64;
 this.height = 64
+this.bullets = []
 this.image = new Image();
 this.image.src = images.hero;
 this.image.onload = function(){
@@ -55,6 +57,12 @@ this.image.src = images.bg
 }
 draw(){
 ctx.drawImage(this.image,0,0,canvas.width,canvas.height);
+
+ctx.fillText("You Score: "+ score ,100,40)
+ctx.fillStyle = "white";
+ctx.font = '55px Avenir';
+
+
 }
 }
 
@@ -65,12 +73,12 @@ this.height = 96
 this.x = character.x + character.width /2 - this.width/2;
 this.y= character.y - this.height
 this.vY = -3;
-this.isTouching= function(item){
-  return  (this.x < item.x + item.width) &&
-          (this.x + this.width > item.x) &&
-          (this.y < item.y + item.height) &&
-          (this.y  - 20 + this.height > item.y);
-                  }      
+// this.isTouching= function(item){
+//   return  (this.x < item.x + item.width) &&
+//           (this.x + this.width > item.x) &&
+//           (this.y < item.y + item.height) &&
+//           (this.y  - 20 + this.height > item.y);
+//                   }      
 this.image = new Image();
 this.image.src = images.bullet;
 this.image.onload = function(){
@@ -90,20 +98,22 @@ this.x = x;
 this.y = y;
 this.width = 64;
 this.height = 64;
+this.live = 1
 this.contador = Math.floor(Math.random()*6);
-this.isTouching= function(item){
-  console.log(item)
-  if((this.x < item.x + item.width) &&
-          (this.x + this.width > item.x) &&
-          (this.y < item.y + item.height) &&
-          (this.y  - 20 + this.height > item.y)){
-            return true
-          };
-  }      
+// this.isTouching= function(item){
+//   console.log(item)
+//   if((this.x < item.x + item.width) &&
+//           (this.x + this.width > item.x) &&
+//           (this.y < item.y + item.height) &&
+//           (this.y  - 20 + this.height > item.y)){
+//             return true
+//           };
+//   }      
 this.image = new Image();
 this.image.src = (this.contador === 1 ) ? imgBasura.bolsa: 
                  (this.contador === 2 ) ? imgBasura.botella:
                  (this.contador === 3 ) ? imgBasura.cigarro:
+                 (this.contador === 4 ) ? imgBasura.duff:
                  (this.contador === 4 ) ? imgBasura.duff:
                  imgBasura.popote;  
 
@@ -112,9 +122,14 @@ this.image.src = (this.contador === 1 ) ? imgBasura.bolsa:
   draw(){
   ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
 }
+isTouching(item){
+  return  (this.x < item.x + item.width) &&
+          (this.x + this.width > item.x) &&
+          (this.y < item.y + item.height) &&
+          (this.y + this.height > item.y);
 
 }
-
+}
 
 //instances
 var hero = new Hero()
@@ -130,7 +145,8 @@ function update(){
   generateBasura()
   drawBasura()
   drawBullets()
-  checkCollition();
+  checkCollition()
+  checkClean()
 }
 
 
@@ -145,7 +161,7 @@ function start(){
 
   //BASURA
   function generateBasura(){
-    if(!(frames%400===0) ) return;
+    if(!(frames%30===0) ) return;
     var basura = new Basura();
     basuras.push(basura)
   }
@@ -156,24 +172,35 @@ function start(){
   })}
 
   function generatebullet(){
+  // if(!(frames%2===0) ) return;
     var bullet = new Bullet(hero);
-    bullets.push(bullet);
+    hero.bullets.push(bullet);
   }
   
   function drawBullets(){
-    bullets.forEach(function(bullet){
+    hero.bullets.forEach(function(bullet){
       bullet.draw()
     })}
 
 
     
   function checkCollition(){
-    basuras.forEach(function (basura){
-      bullets.forEach(function (bullet){
-        console.log("tocaste")
-      })
-    })
-}  
+    for(var i = 0; i<basuras.length; i++)
+    for(var j = 0; j<hero.bullets.length; j++)
+    if(basuras[i].isTouching(hero.bullets[j]))
+    basuras[i].live--;
+  }
+
+  function checkClean(){
+    for(var i = 0; i<basuras.length; i++)
+      for(var j = 0; j<hero.bullets.length; j++)
+        if(basuras[i].live === 0){
+        basuras.splice(i,1);
+        hero.bullets.splice(j,1);
+        score++;
+    }
+  }
+
   
 
 //listeners
@@ -181,11 +208,11 @@ function start(){
 addEventListener('keydown', function(e){
   console.log(e.keyCode)
   switch(e.keyCode){
-    case 37:
+    case 90:
     if(hero.x === 0)return;
     hero.x-=64;
     break;
-    case 39:
+    case 88:
     if(hero.x === canvas.width - hero.width)return;
     hero.x+=64;
     break;
@@ -196,6 +223,3 @@ addEventListener('keydown', function(e){
 })
 
 
-document.getElementById("one").addEventListener('click',function(){
-  if (frames <= 1) start()
-})
