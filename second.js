@@ -31,9 +31,9 @@ var basuras2 = []
 //class
 
 class Hero2{
-  constructor(x=0,y=0,img){
+  constructor(){
 this.x = canvas2.width/2
-this.y = canvas2.height -64
+this.y = canvas2.height -66
 this.width = 64;
 this.height = 64
 this.bullets2 = []
@@ -70,7 +70,7 @@ this.width = 35
 this.height = 96
 this.x = character2.x + character2.width /2 - this.width/2;
 this.y= character2.y - this.height
-this.vY = -3;
+this.vY = -4;
 // this.isTouching= function(item){
 //   return  (this.x < item.x + item.width) &&
 //           (this.x + this.width > item.x) &&
@@ -221,9 +221,13 @@ addEventListener('keydown', function(e){
     if(hero2.x === canvas2.width - hero2.width)return;
     hero2.x+=64;
     break;
-    case 13:
+    case 38:
       generatebullet2()
       break
+      case 40:
+      generatebullet2()
+      break
+
   }
 })
 
