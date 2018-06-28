@@ -195,52 +195,52 @@ isTouching(item){
 }
 
 //BONUS - BONUS - BONUS - BONUS
-class BonusLeft{
-  constructor(){
-  this.x = -64;
-  this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
-  this.width = 64
-  this.height = 64
-  this.live = 1
-  this.vX = Math.floor(Math.random()*3)+2
-  this.image = new Image();
-  this.image.src = './images/bonusLeft.png'
-}
-draw(){
-  this.x+=this.vX;
-  ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
-}
-isTouching(item){
-  return  (this.x < item.x + item.width) &&
-          (this.x + this.width > item.x) &&
-          (this.y < item.y + item.height) &&
-          (this.y -20 + this.height > item.y);
+// class BonusLeft{
+//   constructor(){
+//   this.x = -64;
+//   this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
+//   this.width = 64
+//   this.height = 64
+//   this.live = 1
+//   this.vX = Math.floor(Math.random()*3)+2
+//   this.image = new Image();
+//   this.image.src = './images/bonusLeft.png'
+// }
+// draw(){
+//   this.x+=this.vX;
+//   ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+// }
+// isTouching(item){
+//   return  (this.x < item.x + item.width) &&
+//           (this.x + this.width > item.x) &&
+//           (this.y < item.y + item.height) &&
+//           (this.y -20 + this.height > item.y);
 
-}
-}
-class BonusRigth{
-  constructor(){
-  this.x = canvas.width +64;
-  this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
-  this.width = 64
-  this.height = 64
-  this.live = 1
-  this.vX = Math.floor(Math.random()*-3)-2
-  this.image = new Image();
-  this.image.src = './images/BonusRigth.png'
-}
-draw(){
-  this.x+=this.vX;
-  ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
-}
-isTouching(item){
-  return  (this.x < item.x + item.width) &&
-          (this.x + this.width > item.x) &&
-          (this.y < item.y + item.height) &&
-          (this.y -20 + this.height > item.y);
+// }
+// }
+// class BonusRigth{
+//   constructor(){
+//   this.x = canvas.width +64;
+//   this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
+//   this.width = 64
+//   this.height = 64
+//   this.live = 1
+//   this.vX = Math.floor(Math.random()*-3)-2
+//   this.image = new Image();
+//   this.image.src = './images/BonusRigth.png'
+// }
+// draw(){
+//   this.x+=this.vX;
+//   ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+// }
+// isTouching(item){
+//   return  (this.x < item.x + item.width) &&
+//           (this.x + this.width > item.x) &&
+//           (this.y < item.y + item.height) &&
+//           (this.y -20 + this.height > item.y);
 
-}
-}
+// }
+// }
 //BONUS - BONUS - BONUS - BONUS
 
 
@@ -260,16 +260,16 @@ function update(){
   generateBasura()
   generateFishLeft()
   generateFishRigth()
-  generateBonusLeft()
-  generateBonusRigth()
+  // generateBonusLeft()
+  // generateBonusRigth()
 
   //DIBUJA
   drawBasura()
   drawBullets()
   drawFishLeft()
   drawFisRigth()
-  drawBonusLeft()
-  drawBonusRigth()
+  // drawBonusLeft()
+  // drawBonusRigth()
 
   //COLISIONES
   checkCollitionBasura()
