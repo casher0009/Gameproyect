@@ -83,14 +83,14 @@ class Board{
       ctx.font = "15px garbage";
       ctx.fillStyle = 'red    ';
     }
-    else if (score <= 200){
+    else if (score <= 100){
       ctx.font = "75px garbage";
       ctx.fillText("NO FUE", 100,200);
       ctx.fillText("SUFICIENTE!", 5,300);
       ctx.font = "15px garbage";
       ctx.fillStyle = 'red    ';
     }
-    else if(score >= 200 && score <= 999){
+    else if(score >= 100 && score <= 199){
       ctx.font = "70px garbage";
       ctx.fillText("GANASTE!!!!", 20,200);
       ctx.fillText("GRACIAS", 20,300);
@@ -99,7 +99,7 @@ class Board{
       ctx.font = "15px garbage";
       ctx.fillStyle = 'red    ';
     }
-    else if(score >= 1000){
+    else if(score >= 200){
      ctx.font = "70px garbage";
      ctx.fillStyle = 'green';
      ctx.fillText("UNETE A", 20,200);
@@ -306,7 +306,7 @@ function update(){
   drawBonusRigth()
   checkCollitionBonusesLeft()
   checkCollitionBonusesRigth()
-  if (60 - Math.floor(frames/60) === 58 ){
+  if (60 - Math.floor(frames/60) === 0 ){
     finishHim()}
   }
 
@@ -387,7 +387,7 @@ function start(){
 
 
     function generateBonusLeft(){
-      if(!(frames%2000===0) ) return;
+      if(!(frames%1000===0) ) return;
       var bonusLeft = new BonusLeft();
       bonusesLeft.push(bonusLeft)
     }
@@ -398,7 +398,7 @@ function start(){
     })}
     
     function generateBonusRigth(){
-      if(!(frames%1000===0) ) return;
+      if(!(frames%500===0) ) return;
       var bonusRigth = new BonusRigth();
       bonusesRigth.push(bonusRigth)
     }
@@ -419,7 +419,7 @@ function start(){
         if(basura.isTouching(bullet)){
           basuras.splice(basuras.indexOf(basura),1);
           hero.bullets.splice(hero.bullets.indexOf(bullet),1);
-          score++;
+          score+= 5 ;
         }
       })
     })
