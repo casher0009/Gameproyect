@@ -459,8 +459,9 @@ function start2(){
 
 
   function OnePlayer(){
+    if (frames2 <=1){
     document.getElementById('second').style.visibility = "hidden"
-  }
+  }}
   
 
 //listeners
