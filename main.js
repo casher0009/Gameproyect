@@ -22,6 +22,7 @@ var images = {
   hero: './images/player1.png',
   hero2: './images/player2.png',
   bg:'./images/canvas bg.jpg',
+  bg2: './images/bg2',
   bullet: './images/bullet.png',
  }
 
