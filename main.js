@@ -55,9 +55,9 @@ class Hero{
     this.bullets = []
     this.image = new Image();
     this.image.src = images.hero;
-    this.image.onload = function(){
-      this.draw()
-      }.bind(this);
+     this.image.onload = function(){
+       this.draw()
+       }.bind(this);
   }
     draw(){
     ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
@@ -71,10 +71,38 @@ class Board{
 }
   draw(){
   ctx.drawImage(this.image,0,0,canvas.width,canvas.height);
-  ctx.fillText("You Score: "+ score ,100,40)
   ctx.fillStyle = "white";
-  ctx.font = '55px Avenir';
+  ctx.font = '40px Avenir';
+  ctx.fillText("You Score: "+ score ,230,40)
+  ctx.fillText("TIME: "+ (60 - Math.floor(frames/60)),20,40)
   }
+  gameOver(){
+    if(score <= 0){
+      ctx.font = "80px Avenir";
+      ctx.fillText("LA REGASTE", 20,100);
+      ctx.font = "20px Serif";
+      ctx.fillStyle = 'peru';
+    }
+    else if (score <= 200){
+      ctx.font = "80px Avenir";
+      ctx.fillText("PERDISTE", 20,100);
+      ctx.font = "20px Serif";
+      ctx.fillStyle = 'peru';
+    }
+    else if(score >= 200 && score <= 999){
+      ctx.font = "80px Avenir";
+      ctx.fillText("AYUDASTE", 20,100);
+      ctx.font = "20px Serif";
+      ctx.fillStyle = 'peru';
+    }
+    else if(score >= 1000){
+     ctx.font = "80px Avenir";
+     ctx.fillText("UNETE A GREANPEACE", 20,100);
+     ctx.font = "20px Serif";
+     ctx.fillStyle = 'peru';
+    } 
+   ctx.fillText("Press 'Esc' to reset", 20,150);
+}
 }
 
 class Bullet{
@@ -195,52 +223,52 @@ isTouching(item){
 }
 
 //BONUS - BONUS - BONUS - BONUS
-// class BonusLeft{
-//   constructor(){
-//   this.x = -64;
-//   this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
-//   this.width = 64
-//   this.height = 64
-//   this.live = 1
-//   this.vX = Math.floor(Math.random()*3)+2
-//   this.image = new Image();
-//   this.image.src = './images/bonusLeft.png'
-// }
-// draw(){
-//   this.x+=this.vX;
-//   ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
-// }
-// isTouching(item){
-//   return  (this.x < item.x + item.width) &&
-//           (this.x + this.width > item.x) &&
-//           (this.y < item.y + item.height) &&
-//           (this.y -20 + this.height > item.y);
+class BonusLeft{
+  constructor(){
+  this.x = -64;
+  this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
+  this.width = 64
+  this.height = 64
+  this.live = 1
+  this.vX = Math.floor(Math.random()*3)+2
+  this.image = new Image();
+  this.image.src = './images/bonusLeft.png'
+}
+draw(){
+  this.x+=this.vX;
+  ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+}
+isTouching(item){
+  return  (this.x < item.x + item.width) &&
+          (this.x + this.width > item.x) &&
+          (this.y < item.y + item.height) &&
+          (this.y -20 + this.height > item.y);
 
-// }
-// }
-// class BonusRigth{
-//   constructor(){
-//   this.x = canvas.width +64;
-//   this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
-//   this.width = 64
-//   this.height = 64
-//   this.live = 1
-//   this.vX = Math.floor(Math.random()*-3)-2
-//   this.image = new Image();
-//   this.image.src = './images/BonusRigth.png'
-// }
-// draw(){
-//   this.x+=this.vX;
-//   ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
-// }
-// isTouching(item){
-//   return  (this.x < item.x + item.width) &&
-//           (this.x + this.width > item.x) &&
-//           (this.y < item.y + item.height) &&
-//           (this.y -20 + this.height > item.y);
+}
+}
+class BonusRigth{
+  constructor(){
+  this.x = canvas.width +64;
+  this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
+  this.width = 64
+  this.height = 64
+  this.live = 1
+  this.vX = Math.floor(Math.random()*-3)-2
+  this.image = new Image();
+  this.image.src = './images/BonusRigth.png'
+}
+draw(){
+  this.x+=this.vX;
+  ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+}
+isTouching(item){
+  return  (this.x < item.x + item.width) &&
+          (this.x + this.width > item.x) &&
+          (this.y < item.y + item.height) &&
+          (this.y -20 + this.height > item.y);
 
-// }
-// }
+}
+}
 //BONUS - BONUS - BONUS - BONUS
 
 
@@ -255,32 +283,25 @@ function update(){
   ctx.clearRect(0,0,canvas.width,canvas.height)
   board.draw()
   hero.draw()
-  
-  //GENERA
   generateBasura()
-  generateFishLeft()
-  generateFishRigth()
-  // generateBonusLeft()
-  // generateBonusRigth()
-
-  //DIBUJA
   drawBasura()
   drawBullets()
+  generateFishLeft()
   drawFishLeft()
+  generateFishRigth()
   drawFisRigth()
-  // drawBonusLeft()
-  // drawBonusRigth()
-
-  //COLISIONES
   checkCollitionBasura()
   checkCollitionPecesRigth()
   checkCollitionPecesLeft()
-
-//CONSECUENCIAS DE COLISION
-  checkCleanBasura()
-  checkCleanPecesLeft()
-  checkCleanPecesRigth()
-}
+  generateBonusLeft()
+  generateBonusRigth()
+  drawBonusLeft()
+  drawBonusRigth()
+  checkCollitionBonusesLeft()
+  checkCollitionBonusesRigth()
+  if (60 - Math.floor(frames/60) === 57 ){
+    finishHim()}
+  }
 
 
 function start(){
@@ -291,6 +312,26 @@ function start(){
 
 
   //aux functions
+
+  function finishHim(){
+    clearInterval(interval);
+    interval = undefined;
+    board.gameOver();
+    // sound.pause();
+    // sound.currentTime = 0;
+  }
+
+  function restart(){
+    if(interval) return;
+    basuras = [];
+    fishesLeft = [];
+    fishesRigth = [];
+    bonusesLeft = [];
+    bonusesRigth = [];
+    score = 0
+    frames = 0;
+    start();
+}
 
   //GENERADORES Y DIBUJANTES
   function generateBasura(){
@@ -339,7 +380,7 @@ function start(){
 
 
     function generateBonusLeft(){
-      if(!(frames%1000===0) ) return;
+      if(!(frames%2000===0) ) return;
       var bonusLeft = new BonusLeft();
       bonusesLeft.push(bonusLeft)
     }
@@ -350,7 +391,7 @@ function start(){
     })}
     
     function generateBonusRigth(){
-      if(!(frames%500===0) ) return;
+      if(!(frames%1000===0) ) return;
       var bonusRigth = new BonusRigth();
       bonusesRigth.push(bonusRigth)
     }
@@ -366,89 +407,69 @@ function start(){
   //COLISIONES Y CONSECUENCIAS
 
   function checkCollitionBasura(){
-    for(var i = 0; i<basuras.length; i++)
-    for(var j = 0; j<hero.bullets.length; j++)
-    if(basuras[i].isTouching(hero.bullets[j]))
-    basuras[i].live--;
-  }
-
-  function checkCleanBasura(){
-    for(var i = 0; i<basuras.length; i++)
-      for(var j = 0; j<hero.bullets.length; j++)
-        if(basuras[i].live === 0){
-        basuras.splice(i,1);
-        hero.bullets.splice(j,1);
-        score++;
-    }
+    hero.bullets.forEach((bullet)=>{
+      basuras.forEach((basura)=>{
+        if(basura.isTouching(bullet)){
+          basuras.splice(basuras.indexOf(basura),1);
+          hero.bullets.splice(hero.bullets.indexOf(bullet),1);
+          score++;
+        }
+      })
+    })
   }
 
   function checkCollitionPecesLeft(){
-    for(var i = 0; i<fishesLeft.length; i++)
-    for(var j = 0; j<hero.bullets.length; j++)
-    if(fishesLeft[i].isTouching(hero.bullets[j]))
-    fishesLeft[i].live--;
-  }
-
-  function checkCleanPecesLeft(){
-    for(var i = 0; i<fishesLeft.length; i++)
-      for(var j = 0; j<hero.bullets.length; j++)
-        if(fishesLeft[i].live === 0){
-        fishesLeft.splice(i,1);
-        hero.bullets.splice(j,1);
-        score--;
-    }
+    hero.bullets.forEach((bullet)=>{
+      fishesLeft.forEach((fish)=>{
+        if(fish.isTouching(bullet)){
+          //el pez se va
+          fishesLeft.splice(fishesLeft.indexOf(fish),1);
+          //la bala tambien
+          hero.bullets.splice(hero.bullets.indexOf(bullet),1);
+          // y los puntos alv
+          score--;
+        }
+      })
+    })
   }
 
   function checkCollitionPecesRigth(){
-    for(var i = 0; i<fishesLeft.length; i++)
-    for(var j = 0; j<hero.bullets.length; j++)
-    if(fishesRigth[i].isTouching(hero.bullets[j]))
-    fishesRigth[i].live--;
+    hero.bullets.forEach((bullet)=>{
+      fishesRigth.forEach((fish)=>{
+        if(fish.isTouching(bullet)){
+          fishesRigth.splice(fishesRigth.indexOf(fish),1);
+          hero.bullets.splice(hero.bullets.indexOf(bullet),1);
+          score--;
+        }
+      })
+    })
   }
 
-  function checkCleanPecesRigth(){
-    for(var i = 0; i<fishesRigth.length; i++)
-      for(var j = 0; j<hero.bullets.length; j++)
-        if(fishesRigth[i].live === 0){
-        fishesRigth.splice(i,1);
-        hero.bullets.splice(j,1);
-        score--;
-    }
-  }
 //BONUS - BONUS - BONUS - BONUS
-  // function checkCollitionPecesLeft(){
-  //   for(var i = 0; i<fishesLeft.length; i++)
-  //   for(var j = 0; j<hero.bullets.length; j++)
-  //   if(fishesLeft[i].isTouching(hero.bullets[j]))
-  //   fishesLeft[i].live--;
-  // }
+  function checkCollitionBonusesLeft(){
+    hero.bullets.forEach((bullet)=>{
+      bonusesLeft.forEach((bonusLeft)=>{
+        if(bonusLeft.isTouching(bullet)){
+          bonusesLeft.splice(bonusesLeft.indexOf(bonusLeft),1);
+          hero.bullets.splice(hero.bullets.indexOf(bullet),1);
+          score+=100;
+        }
+      })
+    })
+  }
 
-  // function checkCleanPecesLeft(){
-  //   for(var i = 0; i<fishesLeft.length; i++)
-  //     for(var j = 0; j<hero.bullets.length; j++)
-  //       if(fishesLeft[i].live === 0){
-  //       fishesLeft.splice(i,1);
-  //       hero.bullets.splice(j,1);
-  //       score--;
-  //   }
-  // }
+  function checkCollitionBonusesRigth(){
+  hero.bullets.forEach((bullet)=>{
+    bonusesRigth.forEach((bonusRigth)=>{
+      if(bonusRigth.isTouching(bullet)){
+        bonusesRigth.splice(bonusesRigth.indexOf(bonusRigth),1);
+        hero.bullets.splice(hero.bullets.indexOf(bullet),1);
+        score-=100;
+      }
+    })
+  })
+}
 
-  // function checkCollitionPecesRigth(){
-  //   for(var i = 0; i<fishesLeft.length; i++)
-  //   for(var j = 0; j<hero.bullets.length; j++)
-  //   if(fishesRigth[i].isTouching(hero.bullets[j]))
-  //   fishesRigth[i].live--;
-  // }
-
-  // function checkCleanPecesRigth(){
-  //   for(var i = 0; i<fishesRigth.length; i++)
-  //     for(var j = 0; j<hero.bullets.length; j++)
-  //       if(fishesRigth[i].live === 0){
-  //       fishesRigth.splice(i,1);
-  //       hero.bullets.splice(j,1);
-  //       score--;
-  //   }
-  // }
 //BONUS - BONUS - BONUS - BONUS
 
   

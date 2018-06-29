@@ -227,7 +227,9 @@ addEventListener('keydown', function(e){
       case 40:
       generatebullet2()
       break
-
+      case 27:
+      restart()
+      break
   }
 })
 
