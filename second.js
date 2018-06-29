@@ -1,8 +1,8 @@
-//canvas2 height="576" width="512"
+//canvas height="576" width="512"
 var canvas2 = document.getElementById("second");
 var ctx2 = canvas2.getContext('2d');
 
-// // //PRUEBAS Y DIMENSIONES DEL CANVAS2
+// // //PRUEBAS Y DIMENSIONES DEL canvas2
 // ctx2.fillRect(0,0,50,50)
 // ctx2.fillRect(canvas2.width-50,0,50,50)
 // ctx2.fillRect(canvas2.width-50,canvas2.height-50,50,50)
@@ -14,62 +14,85 @@ var interval2;
 var frames2 = 0;
 var score2 = 0;
 var basuras2 = []
-//  var images = {
-//   hero: 'https://t1.rbxcdn.com/cbc4940cc40fc00da68ffaab0ed89ae1',
-//   bg:'./images/canvas2 bg.jpg',
-//   bullet2: './images/bullet2.png',
-//  }
-
-// var imgBasura2 = {
-//   bolsa:'./images/bolsa.png',
-//   botella: './images/botella.png',
-//   cigarro: './images/cigarro.png',
-//   duff: './images/duff.png',
-//   popote: './images/popote.png'
-// }
+var fishesLeft2 = []
+var fishesRigth2 = []
+var bonusesLeft2 = []
+var bonusesRigth2 = []
 
 //class
 
-class Hero2{
+class Hero{
   constructor(){
-this.x = canvas2.width/2
-this.y = canvas2.height -66
-this.width = 64;
-this.height = 64
-this.bullets2 = []
-this.image = new Image();
-this.image.src = images.hero2;
-this.image.onload = function(){
-  this.draw()
-}.bind(this);
+    this.x = canvas2.width/2
+    this.y = canvas2.height -66
+    this.width = 64;
+    this.height = 64
+    this.bullets = []
+    this.image = new Image();
+    this.image.src = images.hero;
+     this.image.onload = function(){
+       this.draw()
+       }.bind(this);
   }
-  draw(){
+    draw(){
     ctx2.drawImage(this.image,this.x,this.y,this.width,this.height)
   }
 }
 
-class Board2{
+class Board{
   constructor(){
-this.image = new Image();
-this.image.src = images.bg
+    this.image = new Image();
+    this.image.src = images.bg
 }
-draw(){
-ctx2.drawImage(this.image,0,0,canvas2.width,canvas2.height);
+  draw(){
+  ctx2.drawImage(this.image,0,0,canvas2.width,canvas2.height);
+  ctx2.fillStyle = "white";
+  ctx2.font = '40px Avenir';
+  ctx2.fillText("You Score: "+ score2 ,230,40)
+  ctx2.fillText("TIME: "+ (60 - Math.floor(frames2/60)),20,40)
+  }
+  gameOver(){
+    if(score2 <= 0){
+      ctx2.font = "80px Garbage";
+      ctx2.fillText("LA REGASTE", 10,200);
+      ctx2.font = "15px garbage";
+      ctx2.fillStyle = 'red    ';
+    }
+    else if (score2 <= 200){
+      ctx2.font = "75px garbage";
+      ctx2.fillText("NO FUE", 100,200);
+      ctx2.fillText("SUFICIENTE!", 5,300);
+      ctx2.font = "15px garbage";
+      ctx2.fillStyle = 'red    ';
+    }
+    else if(score2 >= 200 && score2 <= 999){
+      ctx2.font = "70px garbage";
+      ctx2.fillText("GANASTE!!!!", 20,200);
+      ctx2.fillText("GRACIAS", 20,300);
+      ctx2.fillText("POR LIMPIAR", 20,400);
 
-ctx2.fillText("You Score: "+ score2 ,100,40)
-ctx2.fillStyle = "white";
-ctx2.font = '55px Avenir';
-
-
+      ctx2.font = "15px garbage";
+      ctx2.fillStyle = 'red    ';
+    }
+    else if(score2 >= 1000){
+     ctx2.font = "70px garbage";
+     ctx2.fillStyle = 'green';
+     ctx2.fillText("UNETE A", 20,200);
+     ctx2.fillText("GREANPEACE!", 10,300);
+     ctx2.font = "15px garbage";
+     ctx2.fillStyle = 'red   ';
+    } 
+    ctx2.font = "40px garbage";
+   ctx2.fillText("Press 'ESC ' to reset", 20,450);
 }
 }
 
-class Bullet2{
-constructor(character2){
-this.width = 35
-this.height = 96
-this.x = character2.x + character2.width /2 - this.width/2;
-this.y= character2.y - this.height
+class Bullet{
+constructor(character){
+this.width = 25
+this.height = 80
+this.x = character.x + character.width /2 - this.width/2;
+this.y= character.y - this.height
 this.vY = -4;
 // this.isTouching= function(item){
 //   return  (this.x < item.x + item.width) &&
@@ -87,10 +110,10 @@ this.draw();
   this.y+=this.vY;
   ctx2.drawImage(this.image, this.x, this.y, this.width, this.height)
 }
-
 }
 
-class Basura2{
+
+class Basura{
   constructor(x=Math.floor((Math.random())*8)*64,y=(Math.floor((Math.random())*3)*64)+64 ){
 this.x = x;
 this.y = y;
@@ -112,7 +135,6 @@ this.image.src = (this.contador === 1 ) ? imgBasura.bolsa:
                  (this.contador === 2 ) ? imgBasura.botella:
                  (this.contador === 3 ) ? imgBasura.cigarro:
                  (this.contador === 4 ) ? imgBasura.duff:
-                 (this.contador === 4 ) ? imgBasura.duff:
                  imgBasura.popote;  
 
                 
@@ -129,76 +151,308 @@ isTouching(item){
 }
 }
 
+class FishLeft{
+  constructor(){
+  this.x = -64;
+  this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
+  this.width = 64
+  this.height = 64
+  this.live = 1
+  this.vX = Math.floor(Math.random()*3)
+  this.contador = Math.floor(Math.random()*5);
+  this.image = new Image();
+  this.image.src = (this.contador === 1 ) ? imgFishesLeft2.ballena: 
+                   (this.contador === 2 ) ? imgFishesLeft2.delfin:
+                   (this.contador === 3 ) ? imgFishesLeft2.kyroge:
+                   imgFishesLeft2.seadra;
+}
+draw(){
+  this.x+=this.vX;
+  ctx2.drawImage(this.image, this.x, this.y, this.width, this.height)
+}
+isTouching(item){
+  return  (this.x < item.x + item.width) &&
+          (this.x + this.width > item.x) &&
+          (this.y < item.y + item.height) &&
+          (this.y -20 + this.height > item.y);
+
+}
+}
+class FishRigth{
+  constructor(){
+  this.x = canvas2.width +64;
+  this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
+  this.width = 64
+  this.height = 64
+  this.live = 1
+  this.vX = Math.floor(Math.random()*-3)
+  this.contador = Math.floor(Math.random()*2);
+  this.image = new Image();
+  this.image.src = (this.contador === 1 ) ? imgFishRigth.kyroge: 
+                   imgFishRigth.seadra;
+}
+draw(){
+  this.x+=this.vX;
+  ctx2.drawImage(this.image, this.x, this.y, this.width, this.height)
+}
+isTouching(item){
+  return  (this.x < item.x + item.width) &&
+          (this.x + this.width > item.x) &&
+          (this.y < item.y + item.height) &&
+          (this.y -20 + this.height > item.y);
+
+}
+}
+
+//BONUS - BONUS - BONUS - BONUS
+class BonusLeft{
+  constructor(){
+  this.x = -64;
+  this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
+  this.width = 64
+  this.height = 64
+  this.live = 1
+  this.vX = Math.floor(Math.random()*3)+2
+  this.image = new Image();
+  this.image.src = './images/bonusLeft.png'
+}
+draw(){
+  this.x+=this.vX;
+  ctx2.drawImage(this.image, this.x, this.y, this.width, this.height)
+}
+isTouching(item){
+  return  (this.x < item.x + item.width) &&
+          (this.x + this.width > item.x) &&
+          (this.y < item.y + item.height) &&
+          (this.y -20 + this.height > item.y);
+
+}
+}
+class BonusRigth{
+  constructor(){
+  this.x = canvas2.width +64;
+  this.y = (Math.floor(Math.random() * 2)*64) + 256 ;
+  this.width = 64
+  this.height = 64
+  this.live = 1
+  this.vX = Math.floor(Math.random()*-3)-2
+  this.image = new Image();
+  this.image.src = './images/BonusRigth.png'
+}
+draw(){
+  this.x+=this.vX;
+  ctx2.drawImage(this.image, this.x, this.y, this.width, this.height)
+}
+isTouching(item){
+  return  (this.x < item.x + item.width) &&
+          (this.x + this.width > item.x) &&
+          (this.y < item.y + item.height) &&
+          (this.y -20 + this.height > item.y);
+
+}
+}
+//BONUS - BONUS - BONUS - BONUS
+
+
 //instances
-var hero2 = new Hero2()
-var board2 = new Board2()
+var hero = new Hero()
+var board = new Board()
 
 
 //mainFunctions
-function update2(){
+function update(){
   frames2++;
   ctx2.clearRect(0,0,canvas2.width,canvas2.height)
-  board2.draw()
-  hero2.draw()
-  generateBasura2()
-  drawBasura2()
-  drawBullets2()
-  checkCollition2()
-  checkClean2()
-}
+  board.draw()
+  hero.draw()
+  generateBasura()
+  drawBasura()
+  drawBullets()
+  generateFishLeft()
+  drawFishLeft()
+  generateFishRigth()
+  drawFisRigth()
+  checkCollitionBasura()
+  checkCollitionPecesRigth()
+  checkCollitionPecesLeft()
+  generateBonusLeft()
+  generateBonusRigth()
+  drawBonusLeft()
+  drawBonusRigth()
+  checkCollitionBonusesLeft()
+  checkCollitionBonusesRigth2()
+  if (60 - Math.floor(frames2/60) === 58 ){
+    finishHim()}
+  }
 
 
-function start2(){
+function start(){
   interval2 = setInterval(function(){
-    update2();
+    update();
   },1000/60)
   }
 
 
   //aux functions
 
-  //BASURA2
-  function generateBasura2(){
-    if(!(frames2%30===0) ) return;
-    var basura2 = new Basura2();
-    basuras2.push(basura2)
+  function finishHim(){
+    clearInterval(interval2);
+    interval2 = undefined;
+    board.gameOver();
+    // sound.pause();
+    // sound.currentTime = 0;
   }
 
-  function drawBasura2(){
-    basuras2.forEach(function(basura2){
-      basura2.draw();
+  function restart(){
+    if(interval2) return;
+    basuras2 = [];
+    fishesLeft2 = [];
+    fishesRigth2 = [];
+    bonusesLeft2 = [];
+    bonusesRigth2 = [];
+    score2 = 0
+    frames2 = 0;
+    start();
+}
+
+  //GENERADORES Y DIBUJANTES
+  function generateBasura(){
+    if(!(frames2%40===0) ) return;
+    var basura = new Basura();
+    basuras2.push(basura)
+  }
+  function drawBasura(){
+    basuras2.forEach(function(basura){
+      basura.draw();
   })}
 
-  function generatebullet2(){
+
+  function generateFishLeft(){
+    if(!(frames2%200===0) ) return;
+    var fishLeft = new FishLeft();
+    fishesLeft2.push(fishLeft)
+  }
+
+  function drawFishLeft(){
+    fishesLeft2.forEach(function(fishLeft){
+      fishLeft.draw();
+  })}
+  
+  function generateFishRigth(){
+    if(!(frames2%200===0) ) return;
+    var fishRigth = new FishRigth();
+    fishesRigth2.push(fishRigth)
+  }
+
+  function drawFisRigth(){
+    fishesRigth2.forEach(function(fishRigth){
+      fishRigth.draw();
+  })}
+
+  function generatebullet(){
   // if(!(frames2%2===0) ) return;
-    var bullet2 = new Bullet2(hero2);
-    hero2.bullets2.push(bullet2);
+    var bullet = new Bullet(hero);
+    hero.bullets.push(bullet);
   }
   
-  function drawBullets2(){
-    hero2.bullets2.forEach(function(bullet2){
-      bullet2.draw()
+  function drawBullets(){
+    hero.bullets.forEach(function(bullet){
+      bullet.draw()
     })}
 
 
-    
-  function checkCollition2(){
-    for(var i = 0; i<basuras2.length; i++)
-    for(var j = 0; j<hero2.bullets2.length; j++)
-    if(basuras2[i].isTouching(hero2.bullets2[j]))
-    basuras2[i].live--;
-  }
-
-  function checkClean2(){
-    for(var i = 0; i<basuras2.length; i++)
-      for(var j = 0; j<hero2.bullets2.length; j++)
-        if(basuras2[i].live === 0){
-        basuras2.splice(i,1);
-        hero2.bullets2.splice(j,1);
-        score2++;
+    function generateBonusLeft(){
+      if(!(frames2%2000===0) ) return;
+      var bonusLeft = new BonusLeft();
+      bonusesLeft2.push(bonusLeft)
     }
+  
+    function drawBonusLeft(){
+      bonusesLeft2.forEach(function(bonusLeft){
+        bonusLeft.draw();
+    })}
+    
+    function generateBonusRigth(){
+      if(!(frames2%1000===0) ) return;
+      var bonusRigth = new BonusRigth();
+      bonusesRigth2.push(bonusRigth)
+    }
+  
+    function drawBonusRigth(){
+      bonusesRigth2.forEach(function(bonusRigth){
+        bonusRigth.draw();
+    })}
+
+
+
+
+  //COLISIONES Y CONSECUENCIAS
+
+  function checkCollitionBasura(){
+    hero.bullets.forEach((bullet)=>{
+      basuras2.forEach((basura)=>{
+        if(basura.isTouching(bullet)){
+          basuras2.splice(basuras2.indexOf(basura),1);
+          hero.bullets.splice(hero.bullets.indexOf(bullet),1);
+          score2++;
+        }
+      })
+    })
   }
 
+  function checkCollitionPecesLeft(){
+    hero.bullets.forEach((bullet)=>{
+      fishesLeft2.forEach((fish)=>{
+        if(fish.isTouching(bullet)){
+          //el pez se va
+          fishesLeft2.splice(fishesLeft2.indexOf(fish),1);
+          //la bala tambien
+          hero.bullets.splice(hero.bullets.indexOf(bullet),1);
+          // y los puntos alv
+          score2--;
+        }
+      })
+    })
+  }
+
+  function checkCollitionPecesRigth(){
+    hero.bullets.forEach((bullet)=>{
+      fishesRigth2.forEach((fish)=>{
+        if(fish.isTouching(bullet)){
+          fishesRigth2.splice(fishesRigth2.indexOf(fish),1);
+          hero.bullets.splice(hero.bullets.indexOf(bullet),1);
+          score2--;
+        }
+      })
+    })
+  }
+
+//BONUS - BONUS - BONUS - BONUS
+  function checkCollitionBonusesLeft(){
+    hero.bullets.forEach((bullet)=>{
+      bonusesLeft2.forEach((bonusLeft)=>{
+        if(bonusLeft.isTouching(bullet)){
+          bonusesLeft2.splice(bonusesLeft2.indexOf(bonusLeft),1);
+          hero.bullets.splice(hero.bullets.indexOf(bullet),1);
+          score2+=100;
+        }
+      })
+    })
+  }
+
+  function checkCollitionBonusesRigth2(){
+  hero.bullets.forEach((bullet)=>{
+    bonusesRigth2.forEach((bonusRigth)=>{
+      if(bonusRigth.isTouching(bullet)){
+        bonusesRigth2.splice(bonusesRigth2.indexOf(bonusRigth),1);
+        hero.bullets.splice(hero.bullets.indexOf(bullet),1);
+        score2-=100;
+      }
+    })
+  })
+}
+
+//BONUS - BONUS - BONUS - BONUS
 
 
 
@@ -210,34 +464,3 @@ function start2(){
 
 //listeners
 
-addEventListener('keydown', function(e){
-  console.log(e.keyCode)
-  switch(e.keyCode){
-    case 37:
-    if(hero2.x === 0)return;
-    hero2.x-=64;
-    break;
-    case 39:
-    if(hero2.x === canvas2.width - hero2.width)return;
-    hero2.x+=64;
-    break;
-    case 38:
-      generatebullet2()
-      break
-      case 40:
-      generatebullet2()
-      break
-      case 27:
-      restart()
-      break
-  }
-})
-
-document.getElementById("one").addEventListener('click',function(){
-  if (frames <= 1) start(); OnePlayer()
-})
-
-document.getElementById("two").addEventListener('click',function(){
-  if (frames <= 1) start()
-  ;if (frames2 <= 1) start2()
-})

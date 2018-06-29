@@ -78,30 +78,37 @@ class Board{
   }
   gameOver(){
     if(score <= 0){
-      ctx.font = "80px Avenir";
-      ctx.fillText("LA REGASTE", 20,100);
-      ctx.font = "20px Serif";
-      ctx.fillStyle = 'peru';
+      ctx.font = "80px Garbage";
+      ctx.fillText("LA REGASTE", 10,200);
+      ctx.font = "15px garbage";
+      ctx.fillStyle = 'red    ';
     }
     else if (score <= 200){
-      ctx.font = "80px Avenir";
-      ctx.fillText("PERDISTE", 20,100);
-      ctx.font = "20px Serif";
-      ctx.fillStyle = 'peru';
+      ctx.font = "75px garbage";
+      ctx.fillText("NO FUE", 100,200);
+      ctx.fillText("SUFICIENTE!", 5,300);
+      ctx.font = "15px garbage";
+      ctx.fillStyle = 'red    ';
     }
     else if(score >= 200 && score <= 999){
-      ctx.font = "80px Avenir";
-      ctx.fillText("AYUDASTE", 20,100);
-      ctx.font = "20px Serif";
-      ctx.fillStyle = 'peru';
+      ctx.font = "70px garbage";
+      ctx.fillText("GANASTE!!!!", 20,200);
+      ctx.fillText("GRACIAS", 20,300);
+      ctx.fillText("POR LIMPIAR", 20,400);
+
+      ctx.font = "15px garbage";
+      ctx.fillStyle = 'red    ';
     }
     else if(score >= 1000){
-     ctx.font = "80px Avenir";
-     ctx.fillText("UNETE A GREANPEACE", 20,100);
-     ctx.font = "20px Serif";
-     ctx.fillStyle = 'peru';
+     ctx.font = "70px garbage";
+     ctx.fillStyle = 'green';
+     ctx.fillText("UNETE A", 20,200);
+     ctx.fillText("GREANPEACE!", 10,300);
+     ctx.font = "15px garbage";
+     ctx.fillStyle = 'red   ';
     } 
-   ctx.fillText("Press 'Esc' to reset", 20,150);
+    ctx.font = "40px garbage";
+   ctx.fillText("Press 'ESC ' to reset", 20,450);
 }
 }
 
@@ -299,7 +306,7 @@ function update(){
   drawBonusRigth()
   checkCollitionBonusesLeft()
   checkCollitionBonusesRigth()
-  if (60 - Math.floor(frames/60) === 57 ){
+  if (60 - Math.floor(frames/60) === 58 ){
     finishHim()}
   }
 
