@@ -61,3 +61,10 @@ max-height: 100vh;
 
   #botones button{
 margin: 20% 0  }
+
+#canvas1{
+  padding-left: 2%
+}
+#canvas2{
+  padding-right: 2%
+}
