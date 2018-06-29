@@ -69,6 +69,8 @@ class Board{
   constructor(){
     this.image = new Image();
     this.image.src = images.bg
+    this.music = new Audio()
+    this.music.src = "./music/music.mp3"
 }
   draw(){
   ctx.drawImage(this.image,0,0,canvas.width,canvas.height);
@@ -76,6 +78,8 @@ class Board{
   ctx.font = '40px Avenir';
   ctx.fillText("You Score: "+ score ,230,40)
   ctx.fillText("TIME: "+ (60 - Math.floor(frames/60)),20,40)
+  this.music.play()
+
   }
   gameOver(){
     if(score <= 0){
@@ -325,8 +329,8 @@ function start(){
     clearInterval(interval);
     interval = undefined;
     board.gameOver();
-    // sound.pause();
-    // sound.currentTime = 0;
+    board.music.pause()
+    board.music.currentTime = 0;
   }
 
   function restart(){
