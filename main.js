@@ -83,23 +83,30 @@ class Board{
   }
   gameOver(){
     if(score <= 0){
-      ctx.font = "80px Garbage";
-      ctx.fillText("LA REGASTE", 10,200);
+      ctx.font = "70px Garbage";
+      ctx.fillStyle = 'red';
+      ctx.fillText("PERDISTE!!!!", 5,200);
+      ctx.fillText("NO LIMPIASTE", 5,300);
       ctx.font = "15px garbage";
       ctx.fillStyle = 'red    ';
     }
     else if (score <= 100){
-      ctx.font = "75px garbage";
-      ctx.fillText("NO FUE", 100,200);
-      ctx.fillText("SUFICIENTE!", 5,300);
+      ctx.font = "60px garbage";
+      ctx.fillStyle = 'red';
+      ctx.fillText("PERDISTE!!!!", 10,200);
+      ctx.fillStyle = 'white';
+      ctx.fillText("FALTO LIMPIAR", 10,280);
+      ctx.fillText("TRATA OTRAVEZ", 10,350);
       ctx.font = "15px garbage";
       ctx.fillStyle = 'red    ';
     }
     else if(score >= 100 && score <= 199){
       ctx.font = "70px garbage";
+      ctx.fillStyle = 'green';
       ctx.fillText("GANASTE!!!!", 20,200);
-      ctx.fillText("GRACIAS", 20,300);
-      ctx.fillText("POR LIMPIAR", 20,400);
+      ctx.fillStyle = 'white';
+      ctx.fillText("GRACIAS", 20,270);
+      ctx.fillText("POR LIMPIAR", 20,350);
 
       ctx.font = "15px garbage";
       ctx.fillStyle = 'red    ';
@@ -107,8 +114,8 @@ class Board{
     else if(score >= 200){
      ctx.font = "70px garbage";
      ctx.fillStyle = 'green';
-     ctx.fillText("UNETE A", 20,200);
-     ctx.fillText("GREANPEACE!", 10,300);
+     ctx.fillText("YA UNETE A", 20,200);
+     ctx.fillText("GREENPEACE!!!", 10,300);
      ctx.font = "15px garbage";
      ctx.fillStyle = 'red   ';
     } 
@@ -116,6 +123,7 @@ class Board{
    ctx.fillText("Press 'ESC ' to reset", 20,450);
 }
 }
+
 
 class Bullet{
 constructor(character){

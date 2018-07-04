@@ -53,23 +53,30 @@ class Board2{
   }
   gameOver(){
     if(score2 <= 0){
-      ctx2.font = "80px Garbage";
-      ctx2.fillText("LA REGASTE", 10,200);
+      ctx2.font = "70px Garbage";
+      ctx2.fillStyle = 'red';
+      ctx2.fillText("PERDISTE!!!!", 5,200);
+      ctx2.fillText("NO LIMPIASTE", 5,300);
       ctx2.font = "15px garbage";
       ctx2.fillStyle = 'red    ';
     }
     else if (score2 <= 100){
-      ctx2.font = "75px garbage";
-      ctx2.fillText("NO FUE", 100,200);
-      ctx2.fillText("SUFICIENTE!", 5,300);
+      ctx2.font = "60px garbage";
+      ctx2.fillStyle = 'red';
+      ctx2.fillText("PERDISTE!!!!", 10,200);
+      ctx2.fillStyle = 'white';
+      ctx2.fillText("FALTO LIMPIAR", 10,280);
+      ctx2.fillText("TRATA OTRAVEZ", 10,350);
       ctx2.font = "15px garbage";
       ctx2.fillStyle = 'red    ';
     }
     else if(score2 >= 100 && score2 <= 199){
       ctx2.font = "70px garbage";
+      ctx2.fillStyle = 'green';
       ctx2.fillText("GANASTE!!!!", 20,200);
-      ctx2.fillText("GRACIAS", 20,300);
-      ctx2.fillText("POR LIMPIAR", 20,400);
+      ctx2.fillStyle = 'white';
+      ctx2.fillText("GRACIAS", 20,270);
+      ctx2.fillText("POR LIMPIAR", 20,350);
 
       ctx2.font = "15px garbage";
       ctx2.fillStyle = 'red    ';
@@ -77,11 +84,12 @@ class Board2{
     else if(score2 >= 200){
      ctx2.font = "70px garbage";
      ctx2.fillStyle = 'green';
-     ctx2.fillText("UNETE A", 20,200);
-     ctx2.fillText("GREANPEACE!", 10,300);
+     ctx2.fillText("YA UNETE A", 20,200);
+     ctx2.fillText("GREENPEACE!!!", 10,300);
      ctx2.font = "15px garbage";
      ctx2.fillStyle = 'red   ';
     } 
+
     ctx2.font = "40px garbage";
    ctx2.fillText("Press 'ESC ' to reset", 20,450);
 }
